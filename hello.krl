@@ -30,3 +30,4 @@ A first ruleset for the Quickstart
       log ("LOG says Hello " + name);
   }
 }
+}
