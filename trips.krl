@@ -72,14 +72,14 @@ ruleset hello_world {
     fired {
 
       raise explicit event 'trip_processed' // common bug to not put in ''.
-          attributes mileage;
+          attributes {};
        set ent:long_trip mileage;        
-       log "rasing explicit:found_long_trip with mileage=" + mileage;
-       log "action: " + mileage + " > " + ent:long_trip;
+       log "rasing explicit:found_long_trip with mileage=" + m;
+       //log "action: " + m + " > " + ent:long_trip;
 
     }
     else {
-      log "no action: " + mileage + " <= " + ent:long_trip;
+      log "no action: " + m + " <= " + ent:long_trip;
     }
 
   }
