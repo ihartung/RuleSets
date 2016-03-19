@@ -75,10 +75,11 @@ ruleset hello_world {
           attributes mileage;
        set ent:long_trip mileage;        
        log "rasing explicit:found_long_trip with mileage=" + mileage;
+       log "action: " + mileage + " > " + ent:long_trip;
 
     }
     else {
-      log "no action: " + mileage + " < " + ent:long_trip;
+      log "no action: " + mileage + " <= " + ent:long_trip;
     }
 
   }
