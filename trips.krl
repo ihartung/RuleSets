@@ -18,6 +18,19 @@ ruleset hello_world {
 
   }
 
+  rule message {
+    select when echo message
+    pre{
+      mileage = event:attr("input").klog("mileage: ");
+      }
+      {
+      
+        send_directive("say") with
+        something = input;
+      }
+      }
+
+
 
   rule process_trip {
     select when echo message
