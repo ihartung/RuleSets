@@ -19,7 +19,7 @@ A first ruleset for the Quickstart
 
     user_by_name = function(full_name){
       all_users = users();
-      log "LOG  in user_by_name full_name: " + name ;
+
       filtered_users = all_users.filter( function(user_id, val){
         constructed_name = val{["name","first"]} + " " + val{["name","last"]};
         (constructed_name eq full_name);
@@ -53,6 +53,7 @@ A first ruleset for the Quickstart
       full_name = name.split(re/\s/);
       first_name = full_name[0].klog("first : ");
       last_name = full_name[1].klog("last : "); // note we don't check name format its assumed.
+      log "LOG  in user_by_name full_name: " + name ;
       matching_user = user_by_name(name).klog("user result: "); //has id
       user_id = matching_user.keys().head().klog("id: ");
       new_user = {
