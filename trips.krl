@@ -19,8 +19,8 @@ ruleset hello_world {
   }
 
 
-  rule hello_world {
-    select when echo hello
+  rule process_trip {
+    select when echo message
     pre{
       mileage = event:attr("mileage").klog("mileage: ");
       }
