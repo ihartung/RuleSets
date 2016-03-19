@@ -27,7 +27,7 @@ ruleset hello_world {
       {
       
         send_directive("say") with
-        trip_length = "#{mileage}";
+        trip_length = mileage;
       }
 
   }
