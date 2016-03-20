@@ -27,7 +27,13 @@ ruleset hello_world {
       all_long_trips = long_trips();
       skeys = all_trips.keys().klog("keys from trips: ");
       keys = all_long_trips.keys().klog("keys from long: ");
+      bool = keys.any(function(x){"55" eq x}).klog("is 55 in there: ");
+      bool2 = keys.any(function(x){"77" eq x}).klog("is 77 in there: ");
+
+
+
       short_trips = alltrips.filter( function(t_l, zeit){
+
         (not keys.any(function(x){t_l eq x}));
       }).klog("short_trips: ");
 
