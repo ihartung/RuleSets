@@ -25,10 +25,11 @@ ruleset hello_world {
     short_trips = function(){
       all_trips = trips();
       all_long_trips = long_trips();
+      skeys = all_trips.keys().klog("keys from trips: ");
       keys = all_long_trips.keys().klog("keys from long: ");
       short_trips = alltrips.filter( function(t_l, zeit){
         (not keys.any(function(x){t_l eq x}));
-      });
+      }).klog("short_trips: ");
 
       short_trips
 
