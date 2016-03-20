@@ -39,7 +39,7 @@ ruleset hello_world {
 
 
       short_trips = all_trips.filter( function(t_l, zeit){
-        checker(t_l);
+        checker(t_l).klog("is it in long? ");
       }).klog("short_trips: ");
 
       short_trips
