@@ -38,7 +38,7 @@ ruleset hello_world {
 
 
 
-      short_trips = alltrips.filter( function(t_l, zeit){
+      short_trips = all_trips.filter( function(t_l, zeit){
 
         checker(t_l);
       }).klog("short_trips: ");
