@@ -25,9 +25,9 @@ ruleset hello_world {
     short_trips = function(){
       all_trips = trips();
       all_long_trips = long_trips();
-      keys = all_long_trips.keys();
+      keys = all_long_trips.keys().klog("keys from long: ");
       short_trips = alltrips.filter( function(t_l, zeit){
-        (keys.any(function(x){t_l eq x}));
+        (not keys.any(function(x){t_l eq x}));
       });
 
       short_trips
