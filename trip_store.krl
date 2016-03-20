@@ -27,12 +27,13 @@ ruleset hello_world {
       all_long_trips = long_trips();
       skeys = all_trips.keys().klog("keys from trips: ");
       keys = all_long_trips.keys().klog("keys from long: ");
-      bool = keys.any(function(x){"55" eq x}).klog("is 55 in there: ");
-      bool2 = keys.any(function(x){"77" eq x}).klog("is 77 in there: ");
 
       checker = function(distance){
         keys.any(function(x){distance eq x}) => false | true
       };
+
+      bool = checker("55").klog("is 55 cc in there: ");
+      bool2 = checker("77").klog("is 77 cc in there: ");
 
 
 
