@@ -52,7 +52,7 @@ ruleset hello_world {
           time = t;
       }
       always{
-        set ent:long_trips{[m]} t;
+        set ent:trips{[m]} t;
       }
 
 
