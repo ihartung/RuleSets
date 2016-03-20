@@ -30,11 +30,16 @@ ruleset hello_world {
       bool = keys.any(function(x){"55" eq x}).klog("is 55 in there: ");
       bool2 = keys.any(function(x){"77" eq x}).klog("is 77 in there: ");
 
+      checker = function(distance){
+        keys.any(function(x){distance eq x}) => false | true
+      };
+
+
 
 
       short_trips = alltrips.filter( function(t_l, zeit){
 
-        (not keys.any(function(x){t_l eq x}));
+        checker(t_l);
       }).klog("short_trips: ");
 
       short_trips
