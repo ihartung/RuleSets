@@ -1,11 +1,11 @@
-ruleset hello_world {
+ruleset trip_store {
   meta {
     name "trip_store"
     author "Isaac Hartung"
     logging on
     sharing on
       provides trips, long_trips, short_trips
- 
+
   }
 
 

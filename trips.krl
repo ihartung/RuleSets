@@ -1,11 +1,11 @@
-ruleset hello_world {
+ruleset track-trips {
   meta {
     name "track_trips"
     author "Isaac Hartung"
     logging on
     sharing on
       provides hello
- 
+
   }
 
 
@@ -24,7 +24,7 @@ ruleset hello_world {
       mileage = event:attr("input").klog("mileage: ");
       }
       {
-      
+
         send_directive("say") with
         something = input;
       }
@@ -49,7 +49,7 @@ ruleset hello_world {
       }
       always{
       raise explicit event 'trip_processed' // common bug to not put in ''.
-          attributes atts;        
+          attributes atts;
        log "rasing explicit:trip_processed with mileage=" + mileage;
        }
 
@@ -60,7 +60,7 @@ ruleset hello_world {
     select when explicit trip_processed
     pre{
 
-      
+
       m = event:attr("mileage").klog("pass in mileage: ");
       mileage = m.decode().klog("mileage decoded: ");
 
@@ -73,8 +73,8 @@ ruleset hello_world {
 
       raise explicit event 'trip_processed' // common bug to not put in ''.
           attributes {};
-       set ent:long_trip mileage;        
-       log "rasing explicit:found_long_trip with mileage=" + m;
+       set ent:long_trip mileage;
+       log "raising explicit:found_long_trip with mileage=" + m;
        //log "action: " + m + " > " + ent:long_trip;
 
     }
