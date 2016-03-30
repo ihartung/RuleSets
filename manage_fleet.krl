@@ -109,7 +109,7 @@ ruleset manage_fleet {
     ids = ids();
     name = "vehicle" + val.as(str);
     val = val + 1;
-    attributes = {}
+    attrs = {}
 
                           .put(["Prototype_rids"],"b507740x2.prod") // ; separated rulesets the child needs installed at creation
                           .put(["name"],name) // name for child
@@ -120,14 +120,16 @@ ruleset manage_fleet {
 send_directive("vehicle_created") with
   name = name;
 
-  event:send({"cid":meta:eci()}, "wrangler", "child_creation")  // wrangler api event.
-  with attrs = attributes.klog("attributes: "); // needs a name attribute for child
+  //event:send({"cid":meta:eci()}, "wrangler", "child_creation")  // wrangler api event.
+  //with attrs = attributes.klog("attributes: "); // needs a name attribute for child
 
 
 
 }
 always{
   log "create child for " + name;
+  raise wrangler event "subscription"
+      attributes attrs;
   set ent:ids ids().append(name);
   set ent:counter val;
 }
