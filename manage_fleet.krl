@@ -24,6 +24,7 @@ ruleset manage_fleet {
         logger = cloud_url.klog("cloud_url: ");
 
           cloud = function(eci, mod, func, params) {
+          x = "#{cloud_url}#{mod}/#{func}".klog("url: ");
           response = http:get("#{cloud_url}#{mod}/#{func}", (params || {}).put(["_eci"], eci));
 
 
