@@ -12,15 +12,25 @@ ruleset trip_store {
   global {
 
 
+
+
+  //----------------------------trips----------------------------------
+
     trips = function(){
       trips = ent:trips;
       trips
     };
 
+
+    //----------------------------long_trips----------------------------------
+
     long_trips = function(){
       long_trips = ent:long_trips;
       long_trips
     };
+
+
+    //----------------------------short_trips----------------------------------
 
     short_trips = function(){
       all_trips = trips();
@@ -48,6 +58,10 @@ ruleset trip_store {
 
   }
 
+
+
+  //----------------------------collect_trips----------------------------------
+
   rule collect_trips {
     select when explicit trip_processed
       pre{
@@ -70,6 +84,10 @@ ruleset trip_store {
 
   }
 
+
+
+  //----------------------------Collect_long_trips----------------------------------
+
   rule collect_long_trips{
     select when explicit found_long_trip
     pre{
@@ -88,6 +106,10 @@ ruleset trip_store {
 
   }
 
+
+
+  //----------------------------clear_trips----------------------------------
+
   rule clear_trips {
     select when car trip_reset
     {
@@ -99,5 +121,77 @@ ruleset trip_store {
     }
   }
 
+
+
+  //----------------------------createWellKnown----------------------------------
+
+//rule createWellKnown {
+//    select when wrangler init_events
+//    pre {
+//      attr = {}.put(["channel_name"],"Well_Known")
+//                      .put(["channel_type"],"Pico_Tutorial")
+//                      .put(["attributes"],"")
+//                      .put(["policy"],"")
+//                      ;
+//    }
+//    {
+//        event:send({"cid": meta:eci()}, "wrangler", "channel_creation_requested")
+//        with attrs = attr.klog("attributes: ");
+//    }
+//    always {
+//      log("created wellknown channel");
+//    }
+//  }
+
+//----------------------------WellKnownCreated----------------------------------
+
+//rule wellKnownCreated {
+//    select when wrangler channel_created where channel_name eq "Well_Known" && channel_type eq "Pico_Tutorial"
+//    pre {
+//        // find parent
+//        parent_results = wrangler_api:parent();
+//        parent = parent_results{'parent'};
+//        parent_eci = parent[0].klog("parent eci: ");
+//        well_known = wrangler_api:channel("Well_Known").klog("well known: ");
+//        well_known_eci = well_known{"cid"};
+//        init_attributes = event:attrs();
+//        attributes = init_attributes.put(["well_known"],well_known_eci);
+//    }
+//    {
+//        event:send({"cid":parent_eci.klog("parent_eci: ")}, "subscriptions", "child_well_known_created")
+//            with attrs = attributes.klog("event:send attrs: ");
+//    }
+//    always {
+//      log("parent notified of well known channel");
+//    }
+//  }
+
+
+  //----------------------------send_report----------------------------------
+
+  rule send_report {
+    select when fleet report
+    pre {
+
+      id = event:attr("id").klog("pass in mileage: ");
+      trips = trips();
+      parent_results = wrangler_api:parent();
+      parent = parent_results{'parent'};
+      parent_eci = parent[0].klog("parent eci: ");
+      attributes = init_attributes.put(["trips"],trips)
+                                  .put(["id"],id);
+    }
+    {
+      event:send({"cid":parent_eci.klog("parent_eci: ")}, "report", "complete")
+               with attrs = attributes.klog("event:send attrs: ");
+
+    }
+    always{
+      log("parent sent report");
+    }
+
+
+
+  }
 
 }

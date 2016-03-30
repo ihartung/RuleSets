@@ -50,7 +50,7 @@ ruleset track-trips {
       always{
       raise explicit event 'trip_processed' // common bug to not put in ''.
           attributes atts;
-       log "rasing explicit:trip_processed with mileage=" + mileage;
+       log "raising explicit:trip_processed with mileage=" + mileage;
        }
 
   }
