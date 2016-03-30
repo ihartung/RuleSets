@@ -82,7 +82,7 @@ ruleset manage_fleet {
     attributes = {}
 
                           .put(["Prototype_rids"],"b507740x2.prod") // ; separated rulesets the child needs installed at creation
-                          .put([name],child) // name for child
+                          .put(["name"],name) // name for child
                           ;
 }
 {
@@ -90,7 +90,7 @@ ruleset manage_fleet {
   with attrs = attributes.klog("attributes: "); // needs a name attribute for child
 }
 always{
-  log("create child for " + child);
+  log "create child for " + name;
   set ent:children children();
 }
 }
