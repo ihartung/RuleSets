@@ -108,7 +108,7 @@ ruleset manage_fleet {
     select when car new_vehicle
     pre{
     val = ent:counter;
-    ids = ids();
+    ids = ids().klog("ids: ");
     name = "vehicle" + val.as(str);
     val = val + 1;
     attributes = {}
