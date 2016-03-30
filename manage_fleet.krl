@@ -4,9 +4,12 @@ ruleset manage_fleet {
     author "Isaac Hartung"
     logging on
     sharing on
-      provides vehicles, call_trips, report_event
+
 
     use module  b507199x5 alias wranglerOS
+    provides vehicles, call_trips, report_event
+
+
 
   }
 
