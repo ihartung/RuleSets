@@ -16,6 +16,12 @@ ruleset manage_fleet {
 
   global {
 
+  noop = function(){
+
+    null
+
+  };
+
 
   r = function(){
 
@@ -154,30 +160,21 @@ rule delete_vehicle {
 
 //-------------------------------request_sub------------------------------
 
-// Request Subscription
-//rule requestSubscription { // ruleset for parent
-// select when subscriptions child_well_known_created well_known re#(.*)# setting (sibling_well_known_eci)
-//pre {
-//   my_eci = meta:eci();
-//   attributes = {}.put(["name"],"brothers")
-//                   .put(["name_space"],"Tutorial_Subscriptions")
-//                   .put(["my_role"],"BrotherB")
-//                   .put(["your_role"],"BrotherA")
-//                   .put(["target_eci"],my_eci.klog("target Eci: "))
-//                   .put(["channel_type"],"Pico_Tutorial")
-//                   .put(["attrs"],"success")
-//                   ;
-//
-//
-// }
-// {
-//     event:send({"cid":sibling_well_known_eci.klog("sibling_well_known_eci: ")}, "wrangler", "subscription")
-//         with attrs = attributes.klog("attributes for subscription: ");
-// }
-// always{
-//   log("send child well known " +sibling_well_known_eci+ "subscription event for child well known "+my_eci);
-// }
-//}
+
+rule autoAccept {
+    select when wrangler inbound_pending_subscription_added
+    pre{
+      attributes = event:attrs().klog("subcription :");
+      }
+      {
+      noop();
+      }
+    always{
+      raise wrangler event 'pending_subscription_approval'
+          attributes attributes;
+          log("auto accepted subcription.");
+    }
+  }
 
 //-------------------------------receive_report-------------------------------------
 
@@ -239,7 +236,7 @@ rule send_request {
     foreach vehicles() setting (child)
     pre{
       val = ent:temp;
-      attributes = {}.put(["id"], ent:ids[val]);
+      atts = {}.put(["id"], ent:ids[val]);
       val = val + 1;
 
     }
@@ -247,14 +244,18 @@ rule send_request {
       send_directive("sent_request") with
       report = child[0].klog("eci: ");
 
-      event:send({"cid":child[0]}, "fleet", "report")
-      with attrs = attributes.klog("attributes: ");
+      //event:send({"cid":child[0]}, "fleet", "report")
+      //with attrs = attributes.klog("attributes: ");
+
+
 
     }
     always{
 
       log "Sent a request to " + child;
       set ent:temp val;
+      raise fleet event 'report' // common bug to not put in ''.
+          attributes atts;
 
 
     }
