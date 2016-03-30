@@ -91,7 +91,7 @@ ruleset manage_fleet {
 }
 always{
   log "create child for " + name;
-  set ent:children children();
+  set ent:children vehicles();
 }
 }
 
