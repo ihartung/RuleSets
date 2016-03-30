@@ -78,7 +78,9 @@ ruleset manage_fleet {
   rule create_vehicle {
     select when car new_vehicle
     pre{
-    name = "vehicle" + ent:index.as(str);
+    val = ent:counter;
+    name = "vehicle" + val.as(str);
+    val = val + 1;
     attributes = {}
 
                           .put(["Prototype_rids"],"b507740x2.prod") // ; separated rulesets the child needs installed at creation
@@ -96,6 +98,7 @@ ruleset manage_fleet {
 always{
   log "create child for " + name;
   set ent:children vehicles();
+  set ent:counter val;
 }
 }
 
@@ -156,8 +159,8 @@ rule delete_vehicle {
 rule receive_report {
   select when report complete
   pre{
-    id = event:attr("id").klog("pass in mileage: ");
-    trips = event:attr("trips").klog("pass in mileage: ");
+    id = event:attr("id").klog("pass in id: ");
+    trips = event:attr("trips").klog("pass in trips: ");
 
 
   }
@@ -175,11 +178,6 @@ rule receive_report {
 
 rule check_report {
   select when report check
-  pre{
-    index = event:attr("index").klog("pass in mileage: ");
-    trips = event:attr("trips").klog("pass in mileage: ");
-
-  }
   if(ent:report.length() eq children.length()) then {
     send_directive("Finished Report") with
       report = ent:report;
