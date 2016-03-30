@@ -182,6 +182,9 @@ ruleset trip_store {
                                   .put(["id"],id);
     }
     {
+      send_directive("report") with
+      report = attributes;
+
       event:send({"cid":parent_eci}, "report", "complete")
                with attrs = attributes.klog("event:send attrs: ");
 
