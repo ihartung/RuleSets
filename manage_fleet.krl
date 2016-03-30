@@ -21,6 +21,7 @@ ruleset manage_fleet {
 
 
         cloud_url = "https://#{meta:host()}/sky/cloud/";
+        logger = cloud_url.klog("cloud_url: ");
 
           cloud = function(eci, mod, func, params) {
           response = http:get("#{cloud_url}#{mod}/#{func}", (params || {}).put(["_eci"], eci));
@@ -63,7 +64,7 @@ ruleset manage_fleet {
       vs
     };
 
-//-------------------------------call_trips-------------------------------------
+//-------------------------------report-------------------------------------
 
     report = function() {
 
