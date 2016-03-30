@@ -178,7 +178,7 @@ ruleset trip_store {
       parent_results = wrangler_api:parent();
       parent = parent_results{'parent'};
       parent_eci = parent[0].klog("parent eci: ");
-      attributes = init_attributes.put(["trips"],trips)
+      attributes = {}.put(["trips"],trips)
                                   .put(["id"],id);
     }
     {
