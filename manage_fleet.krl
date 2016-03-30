@@ -17,6 +17,23 @@ ruleset manage_fleet {
   global {
 
 
+  r = function(){
+
+  (ent:report == 0) => [] |
+                    ent:report
+
+  };
+
+
+    ids = function() {
+
+      (ent:ids == 0) => [] |
+                        ent:ids
+
+
+    };
+
+
     call_trips = function(eci) {
 
 
@@ -83,6 +100,7 @@ ruleset manage_fleet {
     select when car new_vehicle
     pre{
     val = ent:counter;
+    ids = ids();
     name = "vehicle" + val.as(str);
     val = val + 1;
     attributes = {}
@@ -104,7 +122,7 @@ send_directive("vehicle_created") with
 }
 always{
   log "create child for " + name;
-  set ent:children vehicles();
+  set ent:ids ids().append(name);
   set ent:counter val;
 }
 }
@@ -168,6 +186,8 @@ rule receive_report {
   pre{
     id = event:attr("id").klog("pass in id: ");
     trips = event:attr("trips").klog("pass in trips: ");
+    element = {}.put([id], trips);
+
 
 
   }
@@ -178,6 +198,9 @@ rule receive_report {
   }
   always{
     log "received report from : " + id;
+    set ent:report r().append(element).klog("current report: ");
+    raise report event 'check' // common bug to not put in ''.
+        attributes {};
 
   }
 
@@ -185,14 +208,21 @@ rule receive_report {
 
 rule check_report {
   select when report check
-  if(ent:report.length() eq children.length()) then {
+  pre{
+    report = {}.put(["vehicles"], ent:ids.length())
+                .put(["trips"], ent:report);
+
+
+  }
+  if(ent:report.length() eq ent:ids.length()) then {
     send_directive("Finished Report") with
-      report = ent:report;
+      report = report;
   }
   fired {
 
-    log "Sent the following report: " + ent:report;
+    log "Sent the following report: " + report;
      clear ent:report;
+     clear ent:temp;
 
 
   }
@@ -206,18 +236,28 @@ rule check_report {
 
 rule send_request {
   select when report request
-    foreach ent:children setting (child)
+    foreach vehicles() setting (child)
     pre{
-      keys = child.keys().klog("keys of child: ")
+      val = ent:temp;
+      attributes = {}.put(["id"], val);
+      val = val + 1;
 
     }
     {
       send_directive("sent_request") with
       report = child;
+
+      event:send({"cid":child[0]}, "fleet", "report")
+      with attrs = attributes.klog("attributes: "); // needs a name attribute for child
+
     }
     always{
 
       log "Sent a request to " + child;
+      set ent:temp val;
+      clear ent:report;
+      clear ent:temp;
+
 
     }
 

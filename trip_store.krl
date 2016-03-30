@@ -173,7 +173,7 @@ ruleset trip_store {
     select when fleet report
     pre {
 
-      id = event:attr("id").klog("pass in mileage: ");
+      id = event:attr("id").klog("pass in id: ");
       trips = trips();
       parent_results = wrangler_api:parent();
       parent = parent_results{'parent'};
