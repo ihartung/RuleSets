@@ -7,7 +7,7 @@ ruleset manage_fleet {
 
 
     use module  b507199x5 alias wranglerOS
-    provides vehicles, call_trips, report_event
+    provides vehicles, report
 
 
 
@@ -65,7 +65,7 @@ ruleset manage_fleet {
 
 //-------------------------------call_trips-------------------------------------
 
-    call_trips = function() {
+    report = function() {
 
       vehicles = vehicles().klog("children picos: ");
       report = vehicles.map(call_trips);
@@ -204,7 +204,7 @@ rule check_report {
 
 rule send_request {
   select when report request
-    foreach children setting (child)
+    foreach ent:children setting (child)
     pre{
       keys = child.keys().klog("keys of child: ")
 
