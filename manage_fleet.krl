@@ -239,7 +239,7 @@ rule send_request {
     foreach vehicles() setting (child)
     pre{
       val = ent:temp;
-      attributes = {}.put(["id"], ent:ids[val]);
+      attributes = {};
       val = val + 1;
 
     }
