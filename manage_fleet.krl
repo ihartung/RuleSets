@@ -88,6 +88,10 @@ ruleset manage_fleet {
 {
   event:send({"cid":meta:eci()}, "wrangler", "child_creation")  // wrangler api event.
   with attrs = attributes.klog("attributes: "); // needs a name attribute for child
+
+  send_directive("vehicle_created") with
+    name = name;
+
 }
 always{
   log "create child for " + name;
