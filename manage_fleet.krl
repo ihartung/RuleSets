@@ -239,7 +239,7 @@ rule send_request {
     foreach vehicles() setting (child)
     pre{
       val = ent:temp;
-      attributes = {}.put(["id"], val);
+      attributes = {}.put(["id"], ent:ids[val]);
       val = val + 1;
 
     }
@@ -248,7 +248,7 @@ rule send_request {
       report = child[0].klog("eci: ");
 
       event:send({"cid":child[0]}, "fleet", "report")
-      with attrs = attributes.klog("attributes: "); // needs a name attribute for child
+      with attrs = attributes.klog("attributes: ");
 
     }
     always{

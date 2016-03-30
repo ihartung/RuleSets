@@ -182,7 +182,7 @@ ruleset trip_store {
                                   .put(["id"],id);
     }
     {
-      event:send({"cid":parent_eci.klog("parent_eci: ")}, "report", "complete")
+      event:send({"cid":parent_eci}, "report", "complete")
                with attrs = attributes.klog("event:send attrs: ");
 
     }
