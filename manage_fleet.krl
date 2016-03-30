@@ -70,7 +70,7 @@ ruleset manage_fleet {
     report = function() {
 
       vehicles = vehicles().klog("children picos: ");
-      report = vehicles.map(function(x) {call_trips(x[0])});
+      report = vehicles.map(function(x) {call_trips(x[0])}).klog("report: ");
       report
 
     };
