@@ -245,7 +245,7 @@ rule send_request {
     }
     {
       send_directive("sent_request") with
-      report = child;
+      report = child[0].klog("eci: ");
 
       event:send({"cid":child[0]}, "fleet", "report")
       with attrs = attributes.klog("attributes: "); // needs a name attribute for child
@@ -255,8 +255,6 @@ rule send_request {
 
       log "Sent a request to " + child;
       set ent:temp val;
-      clear ent:report;
-      clear ent:temp;
 
 
     }
