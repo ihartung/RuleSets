@@ -100,7 +100,7 @@ ruleset manage_fleet {
     select when car new_vehicle
     pre{
     val = ent:counter;
-    ids = ids();
+    //ids = ids();
     name = "vehicle" + val.as(str);
     val = val + 1;
     attributes = {}
@@ -122,7 +122,7 @@ send_directive("vehicle_created") with
 }
 always{
   log "create child for " + name;
-  set ent:ids ids().append(name);
+  //set ent:ids ids().append(name);
   set ent:counter val;
 }
 }
