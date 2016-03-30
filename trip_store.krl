@@ -174,7 +174,7 @@ ruleset trip_store {
     pre {
 
       id = event:attr("id").klog("pass in id: ");
-      trips = trips();
+      trips = trips().klog("trips: ");
       parent_results = wrangler_api:parent();
       parent = parent_results{'parent'};
       parent_eci = parent[0].klog("parent eci: ");
